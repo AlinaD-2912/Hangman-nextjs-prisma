@@ -38,17 +38,18 @@ USER node
 # Here we copy a file from "builder" stage to the current "runner" stage
 
 # We also need to change the owner of the files to ensure the "node" user can access them
-COPY --from=builder --chown=node:node /app/node_modules /app/node_modules
+#COPY --from=builder --chown=node:node /app/node_modules /app/node_modules
 # TODO Add missing COPY to complete the production container
-COPY --from=builder --chown=node:node /app/.next /app/.next
-COPY --from=builder --chown=node:node /app/public /app/public
-COPY --from=builder --chown=node:node /app/package*.json /app/
-COPY --from=builder --chown=node:node /app/prisma /app/prisma
-COPY --from=builder --chown=node:node /app/node_modules/.prisma /app/node_modules/.prisma
+COPY --from=builder --chown=node:node /app/.next/standalone/ /app/
+COPY --from=builder --chown=node:node /app/.next/static/ /app/.next/static/
+#COPY --from=builder --chown=node:node /app/public /app/public
+#COPY --from=builder --chown=node:node /app/package*.json /app/
+#COPY --from=builder --chown=node:node /app/prisma /app/prisma
+#COPY --from=builder --chown=node:node /app/node_modules/.prisma /app/node_modules/.prisma
 
 
 # The container will expose port 3000
 EXPOSE 3000
 
 # Start command to use for the conaitner
-CMD ["npm", "start"]
+CMD ["node", "server.js"]
